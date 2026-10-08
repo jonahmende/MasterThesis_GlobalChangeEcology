@@ -121,14 +121,21 @@ def main():
                 s = float(bands.get(arm, pd.Series(dtype=float)).get(lv, np.nan))
                 inside = np.isfinite(s) and abs(v) <= s
                 bad = (sexp, arm, float(lv)) in deg
-                if inside:
-                    ax.plot([float(lv)], [v], 'o', ms=8, mfc='none',
-                            mec='0.25', mew=1.1, zorder=5)
+                # DRAW ORDER MATTERS. The two marks land on the same point
+                # in eight of the ten inconclusive cells. The unlearned flag
+                # is an OPAQUE white disc, so when it was drawn last it hid
+                # the ring underneath and the figure showed two rings where
+                # the text reports ten. The flag goes down first, and the
+                # ring is drawn last and wider, so it encircles the flag
+                # instead of being buried by it.
                 if bad:
                     ax.plot([float(lv)], [v], 'o', ms=8, mfc='white',
-                            mec=C_CONTRAST, mew=1.1, zorder=6)
+                            mec=C_CONTRAST, mew=1.1, zorder=5)
                     ax.plot([float(lv)], [v], 'x', ms=5, color='crimson',
-                            mew=1.4, zorder=7)
+                            mew=1.4, zorder=6)
+                if inside:
+                    ax.plot([float(lv)], [v], 'o', ms=11, mfc='none',
+                            mec='0.25', mew=1.1, zorder=7)
                 if inside or bad:
                     report.append((title, SHORT[BASELINE], arm, float(lv), v, s,
                                    'inconclusive' if inside else '',

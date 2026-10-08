@@ -129,8 +129,11 @@ def main():
                 for lv, v in mu.items():
                     s = float(bands[arm].get(lv, np.nan))
                     if np.isfinite(s) and abs(v) <= s:
-                        ax.plot([float(lv)], [v], 'o', ms=8, mfc='none',
-                                mec='0.25', mew=1.1, zorder=5)
+                        # ms and zorder match fig7, where the ring has to sit
+                        # on top of the unlearned flag; one symbol, one size
+                        # across both contrast figures.
+                        ax.plot([float(lv)], [v], 'o', ms=11, mfc='none',
+                                mec='0.25', mew=1.1, zorder=7)
                         marginal.append((sexp, arm, float(lv), v, s, 'INSIDE'))
                     elif np.isfinite(s) and abs(v) <= 1.5 * s:
                         marginal.append((sexp, arm, float(lv), v, s, 'marginal'))
