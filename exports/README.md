@@ -168,3 +168,38 @@ NOTE on `PA_Distance`: the preprocessing notebook's prose says the WDPA/WDOECM
 download is the May 2026 release, while the code path reads
 `WDPA_WDOECM_Jun2026_Public_DEU_shp`. Both are recorded in `period`; which one
 actually shipped has not been resolved here.
+
+### `configurational_orthogonality.csv` — how far the driver fields sit from the environment
+One row per `w_source` x `quantity`. Spearman rho of the raw edge density E,
+the cover term `P_w`, the orthogonalised `E_perp` and the resulting `S_config`
+against PC1 and PC2, plus the redundancy of E and of `E_perp` given `P_w`, the
+moments of `E_perp`, and the count of pixels inside the interior buffer where
+`E_perp` is undefined. `mu_P_derived` and `frac_woody_realized` record what the
+woody field actually came out at. Produced by `configurational_orthogonality.py`.
+
+### `eds_band_driver_moments.csv` — the driver fields per PC1 band
+One row per `w_source` x draw (`seed` in {1000, 1001, 1002}) x `band`, on 1000
+random pixels per band. `P_w_mean` / `P_w_sd` and `E_mean` / `E_sd` are the
+moments of the cover term and the edge density in that band. These are the
+numbers behind the statement that cover is flat across the bands on the random
+field (0.3016 / 0.2976 / 0.2971 for train / val / test) but rises on the forest
+map (0.2722 / 0.4064 / 0.4489). Produced by `eds_band_drivers.py`; the EDS
+values of the same run are the `drivers_*` rows of `eds_robustness.csv`.
+
+### `eds_metric_properties.csv` — EDS on the DRAWN SAMPLE, not on band pixels
+The companion to `eds_robustness.csv`: the same question asked of the points an
+experiment actually draws. One row per `cell` x `arm` x `check` x `variant`.
+`variant` is either `K=1 … K=20` (the K sweep), `PCA(whiten=True)` (whitening
+on, which rescales each component to unit variance and therefore changes the
+distance), `PCA line removed` (the rotation skipped) or `abs difference`
+(rotation vs no rotation, which is 0 to within float precision because a
+rotation without whitening leaves Euclidean distances unchanged). `n_ref` and
+`n_query` give the training and test sample sizes of that cell.
+
+### `pw_spread.csv` — the spread of the cover term on each woody field
+One row per `w_source` x `quantity`, over the 33,624,026 interior-buffer pixels.
+`P_w` is the cover term itself, `patch32_mean_W` and `patch32_sd_W` the patch
+summaries RF-patch is handed. Mean, SD, the percentile ladder, IQR and CV. This
+is where the difference in woody density between the two fields is read off:
+mean `P_w` is 0.3000 on the random field and 0.4107 on the forest map, with a
+much wider spread on the latter (SD 0.2547 against 0.1086).
