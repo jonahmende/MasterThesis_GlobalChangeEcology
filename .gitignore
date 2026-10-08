@@ -1,0 +1,26 @@
+# macOS / iCloud
+.DS_Store
+.icloud
+*.icloud
+*.nosync
+
+# Python
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+
+# Data and run artefacts (not redistributed — see README)
+data/
+*.tif
+*.tiff
+*.vrt
+*.shp
+*.shx
+*.dbf
+*.prj
+*.gpkg
+keras_tuner*/
+logs/
+*.h5
+*.keras

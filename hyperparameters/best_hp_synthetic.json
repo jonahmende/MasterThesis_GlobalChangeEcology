@@ -1,0 +1,7 @@
+{
+  "filters_1": 32,
+  "filters_2": 16,
+  "dense_units": 32,
+  "dropout": 0.0,
+  "lr": 0.001
+}
